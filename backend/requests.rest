@@ -1,0 +1,38 @@
+@baseUrl=http://localhost:8080
+@healthBaseUrl={{baseUrl}}/health
+@apiBaseUrl={{baseUrl}}/api/v1
+@authBaseUrl={{apiBaseUrl}}/auth
+
+### Health Routes
+
+### Health check
+GET {{healthBaseUrl}}
+
+### Auth Routes
+
+### Login
+POST {{authBaseUrl}}/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "email@email.com",
+    "password": "password"
+  }
+}
+
+### Register
+POST {{authBaseUrl}}/users
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "email@email.com",
+    "password": "password",
+    "username": "username"
+  }
+}
+
+
+### Current User
+GET {{authBaseUrl}}/user/32ea8af9-4535-4ac6-a5db-c459ec696b06
