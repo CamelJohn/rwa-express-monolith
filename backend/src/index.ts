@@ -13,31 +13,35 @@ import { catch_all, error_handler } from './middleware';
 
 const PORT = env.SERVER_PORT;
 
-await database.$connect();
-
 const app = express();
 
 const server = http.createServer(app);
 
-try {
-    app.use(
-        express.json(),
-        express.urlencoded({ extended: true }),
-        cors(),
-        helmet(),
-        morgan('dev'),
-    );
+(async () => {
+    try {
+        await database.$connect();
+        
+        app.use(
+            express.json(),
+            express.urlencoded({ extended: true }),
+            cors(),
+            helmet(),
+            morgan('dev')
+        );
 
-    app.use('/health', health_check_router);
+        app.use('/health', health_check_router);
 
-    app.use('/api/v1', api_router);
+        app.use('/api/v1', api_router);
 
-    app.use('*', catch_all);
+        app.use('*', catch_all);
 
-    app.use(error_handler);
-} catch (error) {
-    await database.$disconnect();
-    process.exit(1);
-}
+        app.use(error_handler);
+    } catch (error) {
+        await database.$disconnect();
+        process.exit(1);
+    }
+})();
 
 server.listen(PORT, () => console.info('Server is running on port', PORT));
+
+export { app, server, database}

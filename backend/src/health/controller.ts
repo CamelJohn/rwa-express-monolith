@@ -19,7 +19,6 @@ const controller: Controller = {
                 },
             });
         } catch (error) {
-            console.log({ error });
             res.status(503).json({
                 status: 'Unhealthy',
                 services: {

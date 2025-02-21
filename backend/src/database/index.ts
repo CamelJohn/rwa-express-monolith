@@ -11,6 +11,7 @@ const postgres = new Sequelize({
     define: {
         timestamps: true,
     },
+    logging: false,
 });
 
 const sqlite = new Sequelize({
@@ -19,14 +20,26 @@ const sqlite = new Sequelize({
     define: {
         timestamps: true,
     },
+    logging: false,
+});
+
+const test = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:',
+    define: {
+        timestamps: true,
+    },
+    logging: false,
 });
 
 const db_map: Record<string, Sequelize> = {
     docker: postgres,
     development: sqlite,
+    test,
 };
 
 const connection = db_map[env.NODE_ENV];
+
 const database = {
     $connect: () => connection.sync({ logging: false, force: true }),
     $disconnect: () => connection.close(),

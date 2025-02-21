@@ -1,0 +1,9 @@
+@baseUrl=http://localhost:8080
+@healthBaseUrl={{baseUrl}}/health
+@apiBaseUrl={{baseUrl}}/api/v1
+@authBaseUrl={{apiBaseUrl}}/auth
+
+### Health Routes
+
+### Health check
+GET {{healthBaseUrl}} HTTP/1.1

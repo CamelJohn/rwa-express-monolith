@@ -11,7 +11,7 @@ export const error_handler: ErrorRequestHandler = (error, req, res, next) => {
     if (createHttpError.isHttpError(error)) {
         res.status(error.status).send({
             message: error.message,
-            original: error.name,
+            name: error.name,
         });
     } else {
         res.status(500).send({

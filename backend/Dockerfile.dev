@@ -10,4 +10,6 @@ COPY . .
 
 RUN npm run types
 
+RUN npm run test:integration
+
 CMD ["npm", "run", "dev"]

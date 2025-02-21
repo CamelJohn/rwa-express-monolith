@@ -3,15 +3,7 @@
 @apiBaseUrl={{baseUrl}}/api/v1
 @authBaseUrl={{apiBaseUrl}}/auth
 
-# switch login to register when needed to test
 @authToken = {{login.response.body.user.token}}
-
-
-### Health Routes
-
-### Health check
-GET {{healthBaseUrl}} HTTP/1.1
-
 ### Auth Routes
 
 ### Login

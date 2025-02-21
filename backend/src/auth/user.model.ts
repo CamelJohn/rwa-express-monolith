@@ -110,6 +110,8 @@ User.init(
     }
 );
 
-await User.sync({ force: true, logging: false });
+(async () => {
+    await User.sync({ force: false, logging: false })
+})();
 
 export default User;
