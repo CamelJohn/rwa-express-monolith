@@ -1,6 +1,6 @@
 {
     "execMap": {
-        "ts": "tsx watch -r dotenv/config",
+        "ts": "tsx -r dotenv/config",
         "watch": "src",
         "ext": ".ts"
     }

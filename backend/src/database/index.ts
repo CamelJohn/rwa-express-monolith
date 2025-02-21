@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import env from '../env';
+import env from '../services/env';
 
 const postgres = new Sequelize({
     dialect: 'postgres',
@@ -27,11 +27,11 @@ const db_map: Record<string, Sequelize> = {
 };
 
 const connection = db_map[env.NODE_ENV];
-
 const database = {
-    $connect: () => connection.sync({ logging: false }),
+    $connect: () => connection.sync({ logging: false, force: true }),
     $disconnect: () => connection.close(),
     connection,
 };
+
 
 export default database;

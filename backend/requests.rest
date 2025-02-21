@@ -3,36 +3,54 @@
 @apiBaseUrl={{baseUrl}}/api/v1
 @authBaseUrl={{apiBaseUrl}}/auth
 
+# switch login to register when needed to test
+@authToken = {{login.response.body.user.token}}
+
+
 ### Health Routes
 
 ### Health check
-GET {{healthBaseUrl}}
+GET {{healthBaseUrl}} HTTP/1.1
 
 ### Auth Routes
 
 ### Login
-POST {{authBaseUrl}}/users/login
+# @name login
+POST {{authBaseUrl}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
   "user": {
-    "email": "email@email.com",
-    "password": "password"
+    "email": "email3@email.com",
+    "password": "password3"
   }
 }
+
 
 ### Register
-POST {{authBaseUrl}}/users
+# @name register
+POST {{authBaseUrl}}/users HTTP/1.1
 Content-Type: application/json
 
 {
   "user": {
-    "email": "email@email.com",
-    "password": "password",
-    "username": "username"
+    "email": "email3@email.com",
+    "password": "password3",
+    "username": "username3"
   }
 }
 
-
 ### Current User
-GET {{authBaseUrl}}/user/32ea8af9-4535-4ac6-a5db-c459ec696b06
+GET {{authBaseUrl}}/user HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+### Update User
+PUT {{authBaseUrl}}/user HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "Jonathan Atia"
+  }
+}

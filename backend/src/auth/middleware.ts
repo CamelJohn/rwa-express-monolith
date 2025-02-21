@@ -1,44 +1,8 @@
 import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
-import Joi from 'joi';
+import { loginRequestSchema, loginResponseSchema, registerRequestSchema, registerResponseSchema, updateUserRequestSchema } from './validation.schemas';
 
-const loginRequestSchema = Joi.object({
-    user: Joi.object({
-        email: Joi.string().email().required(),
-        password: Joi.string().required(),
-    }).required(),
-});
-
-const loginResponseSchema = Joi.object({
-    user: Joi.object({
-        email: Joi.string().email().required(),
-        token: Joi.string().required(),
-        username: Joi.string().required(),
-        bio: Joi.string().allow(null).required(),
-        image: Joi.string().allow(null).required(),
-    }).required(),
-    sessionId: Joi.string().required(),
-});
-
-const registerRequestSchema = Joi.object({
-    user: Joi.object({
-        email: Joi.string().email().required(),
-        username: Joi.string().required(),
-        password: Joi.string().required(),
-    }).required(),
-});
-
-const registerResponseSchema = Joi.object({
-    user: Joi.object({
-        email: Joi.string().email().required(),
-        token: Joi.string().required(),
-        username: Joi.string().required(),
-        bio: Joi.string().allow(null).required(),
-        image: Joi.string().allow(null).required(),
-    }).required(),
-});
-
-export const validate_login_request: RequestHandler = (req, res, next) => {
+const validate_login_request: RequestHandler = (req, res, next) => {
     const { error } = loginRequestSchema.validate(req.body);
 
     if (error) {
@@ -46,9 +10,9 @@ export const validate_login_request: RequestHandler = (req, res, next) => {
     }
 
     next();
-}
+};
 
-export const validate_login_response: RequestHandler = (req, res, next) => {
+const validate_login_response: RequestHandler = (req, res, next) => {
     const { error } = loginResponseSchema.validate(req.body);
 
     if (error) {
@@ -56,9 +20,9 @@ export const validate_login_response: RequestHandler = (req, res, next) => {
     }
 
     next();
-}
+};
 
-export const validate_register_request: RequestHandler = (req, res, next) => {
+const validate_register_request: RequestHandler = (req, res, next) => {
     const { error } = registerRequestSchema.validate(req.body);
 
     if (error) {
@@ -66,9 +30,9 @@ export const validate_register_request: RequestHandler = (req, res, next) => {
     }
 
     next();
-}
+};
 
-export const validate_register_response: RequestHandler = (req, res, next) => {
+const validate_register_response: RequestHandler = (req, res, next) => {
     const { error } = registerResponseSchema.validate(req.body);
 
     if (error) {
@@ -76,5 +40,26 @@ export const validate_register_response: RequestHandler = (req, res, next) => {
     }
 
     next();
-}
+};
 
+export const validate_update_user_request: RequestHandler = (req, res, next) => {
+    const { error } = updateUserRequestSchema.validate(req.body);
+
+    if (error) {
+        return next(new createHttpError.BadRequest(error.message));
+    }
+
+    next();
+};
+
+const middleware = {
+    validate: {
+        preLogin: validate_login_request,
+        postLogin: validate_login_response,
+        preRegister: validate_register_request,
+        postRegister: validate_register_response,
+        preUpdate: validate_update_user_request,
+    },
+};
+
+export default middleware;

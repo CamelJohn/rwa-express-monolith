@@ -16,19 +16,6 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: arm64v8/redis:alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "PING"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
   backend:
     build: 
       context: .
@@ -44,17 +31,12 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
     volumes:
       - ./src:/node/app/src
       - /node/app/node_modules
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
 
 volumes:
   postgres-data:
-  redis-data:

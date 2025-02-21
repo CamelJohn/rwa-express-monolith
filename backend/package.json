@@ -6,6 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon",
+        "types": "tsc --noEmit",
         "compose:up": "docker compose -f dev.compose.yml up --build",
         "compose:down": "docker compose -f dev.compose.yml down",
         "postcompose:up": "npm run compose:down"
@@ -16,10 +17,8 @@
     "description": "",
     "devDependencies": {
         "@types/bcryptjs": "^2.4.6",
-        "@types/connect-redis": "^0.0.23",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
-        "@types/express-session": "^1.18.1",
         "@types/http-errors": "^2.0.4",
         "@types/jsonwebtoken": "^9.0.8",
         "@types/morgan": "^1.9.9",
@@ -32,21 +31,17 @@
     },
     "dependencies": {
         "bcryptjs": "^3.0.2",
-        "connect-redis": "^5.1.0",
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "envalid": "^8.0.0",
         "express": "^4.21.2",
-        "express-session": "^1.18.1",
         "helmet": "^8.0.0",
         "http-errors": "^2.0.0",
-        "ioredis": "^5.5.0",
         "joi": "^17.13.3",
         "jsonwebtoken": "^9.0.2",
         "morgan": "^1.10.0",
         "pg": "^8.13.3",
         "pg-hstore": "^2.3.4",
-        "redis": "^4.7.0",
         "sequelize": "^6.37.5",
         "uninstall": "^0.0.0",
         "uuid": "^11.1.0"

@@ -13,11 +13,7 @@ const env = cleanEnv(process.env, {
     POSTGRES_PASSWORD: str(),
     POSTGRES_DB: str(),
 
-    REDIS_HOST: str(),
-    REDIS_PORT: port({ default: 6379 }),
-
     JWT_SECRET: str(),
-    SESSION_SECRET: str(),
 });
 
 export const isRunningInDocker = (): boolean => {

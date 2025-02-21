@@ -5,19 +5,15 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import express from 'express';
 
-import env from './env';
+import env from './services/env';
 import database from './database';
 import api_router from './api.routes';
 import health_check_router from './health';
 import { catch_all, error_handler } from './middleware';
-import session_handler, { SessionStore } from './session';
-
 
 const PORT = env.SERVER_PORT;
 
 await database.$connect();
-export const sessionStore = new SessionStore();
-await sessionStore.init();
 
 const app = express();
 
@@ -30,7 +26,6 @@ try {
         cors(),
         helmet(),
         morgan('dev'),
-        session_handler
     );
 
     app.use('/health', health_check_router);
@@ -42,7 +37,6 @@ try {
     app.use(error_handler);
 } catch (error) {
     await database.$disconnect();
-    await sessionStore.disconnect();
     process.exit(1);
 }
 

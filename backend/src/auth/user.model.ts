@@ -1,30 +1,17 @@
 import database from '../database';
 import bcrypt from 'bcryptjs';
-import JWT from 'jsonwebtoken';
 import { DataTypes, Model } from 'sequelize';
-import env from '../env';
+import { AuthUserDto, BaseUser } from './interfaces';
 
-interface UserCreationAttributes {
-    username: string;
-    email: string;
-    password: string;
-}
+interface UserCreationAttributes extends BaseUser {}
 
 interface UserAttributes extends UserCreationAttributes {
     id: string;
     bio: string | null;
-    token: string;
+    token: string | null;
     image: string | null;
     createdAt: Date;
     updatedAt: Date;
-}
-
-interface AuthUserDto {
-    email: string;
-    token: string;
-    username: string;
-    bio: string | null;
-    image: string | null;
 }
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -49,13 +36,6 @@ async function handlePassword(user: User) {
     if (user.password && user.changed('password')) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
-    }
-}
-
-async function handleToken(user: User) {
-    if (user.email && user.changed('email')) {
-        const token = JWT.sign({ email: user.email }, env.JWT_SECRET);
-        user.token = token;
     }
 }
 
@@ -90,8 +70,8 @@ User.init(
         },
         token: {
             type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: '',
+            allowNull: true,
+            defaultValue: null,
         },
         bio: {
             type: DataTypes.STRING,
@@ -116,21 +96,20 @@ User.init(
     },
     {
         tableName: 'User',
+        freezeTableName: true,
         sequelize: database.connection,
         hooks: {
             beforeSave: async (user) => {
                 await handlePassword(user);
-                await handleToken(user);
             },
 
             beforeUpdate: async (user) => {
                 await handlePassword(user);
-                await handleToken(user);
             },
         },
     }
 );
 
-await User.sync({ force: false, logging: false });
+await User.sync({ force: true, logging: false });
 
 export default User;
