@@ -1,0 +1,17 @@
+name: Setup Nodejs & Install Dependencies
+description: Setup Nodejs and install dependencies (DRY)
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+
+    - name: Install dependencies
+      shell: bash
+      run: npm install
