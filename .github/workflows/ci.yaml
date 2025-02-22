@@ -1,0 +1,83 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    check-types:
+        name: Check typescript types
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Check types
+              run: npm run check-types
+
+    list-tests:
+        name: List integration tests
+        runs-on: ubuntu-latest
+        outputs:
+            matrix: ${{ steps.list.outputs.matrix }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: List tests
+              id: list
+              run: |
+                  chmod +x ./scripts/list_tests.sh
+                  MATRIX=$(bash ./scripts/list_tests.sh)
+                  echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+    run-integration-tests:
+        name: Run integration tests
+        runs-on: ubuntu-latest
+        needs: list-tests
+        strategy:
+            matrix:
+                integration_test_file: ${{ fromJson(needs.list-tests.outputs.matrix).integration_tests_files }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run integration tests
+              run: npm run test -- ${{ matrix.integration_test_file }}
+
+    build:
+        name: Build typescript with tsc
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build
+              run: npm run build
