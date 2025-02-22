@@ -2,8 +2,7 @@ import { createDefaultPreset, type JestConfigWithTsJest } from 'ts-jest';
 import env from './src/services/env';
 
 const presetConfig = createDefaultPreset({
-    tsconfig: 'tsconfig.json',
-    isolatedModules: true,
+    tsconfig: 'tsconfig.json'
 });
 
 const [, test_type] = env.NODE_ENV.split(':');
@@ -18,8 +17,6 @@ const jestConfig: JestConfigWithTsJest = {
     setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
     maxWorkers: 1,
     verbose: true,
-    cache: true,
-    cacheDirectory: '<rootDir>/.jest-cache'
 };
 
 export default jestConfig;
