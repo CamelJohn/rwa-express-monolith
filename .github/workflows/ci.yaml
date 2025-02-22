@@ -11,8 +11,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
             - name: Setup Node and Install Dependencies
-              uses: ./setup-node-and-install-deps
+              uses: ./.github/actions/setup-node-and-install-deps
 
             - name: Check types
               run: npm run types
@@ -41,8 +44,11 @@ jobs:
             matrix:
                 integration_test_file: ${{ fromJson(needs.list-tests.outputs.matrix).integration_tests_files }}
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
             - name: Setup Node and Install Dependencies
-              uses: ./setup-node-and-install-deps
+              uses: ./.github/actions/setup-node-and-install-deps
 
             - name: Run integration tests
               run: npm run test:integration -- ${{ matrix.integration_test_file }}
@@ -53,8 +59,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Setup Node and Install Dependencies
-              uses: ./setup-node-and-install-deps
+            - name: Checkout code
+              uses: actions/checkout@v4
 
+            - name: Setup Node and Install Dependencies
+              uses: ./.github/actions/setup-node-and-install-deps
+              
             - name: Build
               run: npm run build
