@@ -2,12 +2,15 @@
     "name": "backend",
     "version": "1.0.0",
     "main": "src/index.ts",
-    "type": "module",
     "scripts": {
+        "pretest": "NODE_ENV=test:unit",
         "test": "jest",
-        "test:integration": "jest --runTestsByPath tests/integration/*",
-        "dev": "nodemon",
+        "test:integration": "NODE_ENV=test:integration jest",
+        "dev": "NODE_ENV=development nodemon --config nodemon.dev.json",
+        "preview": "NODE_ENV=development node dist/src/index.js",
+        "build": "tsc",
         "types": "tsc --noEmit",
+        "precompose*": "NODE_ENV=docker",
         "compose:up": "docker compose -f dev.compose.yml up --build",
         "compose:down": "docker compose -f dev.compose.yml down",
         "postcompose:up": "npm run compose:down"

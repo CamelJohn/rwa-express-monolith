@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import env from '../services/env';
+import handle_test_envs from '../helpers';
 
 const postgres = new Sequelize({
     dialect: 'postgres',
@@ -38,7 +39,7 @@ const db_map: Record<string, Sequelize> = {
     test,
 };
 
-const connection = db_map[env.NODE_ENV];
+const connection = db_map[handle_test_envs];
 
 const database = {
     $connect: () => connection.sync({ logging: false, force: true }),

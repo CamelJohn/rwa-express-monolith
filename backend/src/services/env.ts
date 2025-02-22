@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { cleanEnv, port, str } from 'envalid';
 
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const env = cleanEnv(process.env, {
     NODE_ENV: str(),
@@ -15,13 +15,5 @@ const env = cleanEnv(process.env, {
 
     JWT_SECRET: str(),
 });
-
-export const isRunningInDocker = (): boolean => {
-    return env.NODE_ENV === 'docker';
-  };
-  
-  export const isProduction = (): boolean => {
-    return env.NODE_ENV === 'production';
-  };
 
 export default env;

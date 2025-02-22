@@ -2,6 +2,7 @@ import database from '../database';
 import bcrypt from 'bcryptjs';
 import { DataTypes, Model } from 'sequelize';
 import { AuthUserDto, BaseUser } from './interfaces';
+import tokenService from '../services/token';
 
 interface UserCreationAttributes extends BaseUser {}
 
@@ -36,6 +37,11 @@ async function handlePassword(user: User) {
     if (user.password && user.changed('password')) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
+    }
+}
+function handleEmail(user: User) {
+    if (user.email && user.changed('email')) {
+        user.token = tokenService.generate({ userId: user.id, email: user.email });
     }
 }
 
@@ -101,10 +107,12 @@ User.init(
         hooks: {
             beforeSave: async (user) => {
                 await handlePassword(user);
+                handleEmail(user);
             },
 
             beforeUpdate: async (user) => {
                 await handlePassword(user);
+                handleEmail(user);
             },
         },
     }

@@ -134,6 +134,7 @@ const controller: Controller = {
             const user = await extract_current_user(req);
 
             await User.update(req.body.user, { where: { id: user.id } });
+            
             const updated_user = await User.findByPk(user.id);
 
             if (!updated_user) {
