@@ -12,7 +12,7 @@ jobs:
 
         steps:
             - name: Setup Node and Install Dependencies
-              uses: ./.github/actions/setup-node-and-install-deps/action.yaml
+              uses: ./.github/actions/setup-node-and-install-deps
 
             - name: Check types
               run: npm run types
@@ -42,7 +42,7 @@ jobs:
                 integration_test_file: ${{ fromJson(needs.list-tests.outputs.matrix).integration_tests_files }}
         steps:
             - name: Setup Node and Install Dependencies
-              uses: ./.github/actions/setup-node-and-install-deps/action.yaml
+              uses: ./.github/actions/setup-node-and-install-deps
 
             - name: Run integration tests
               run: npm run test:integration -- ${{ matrix.integration_test_file }}
@@ -54,7 +54,7 @@ jobs:
 
         steps:
             - name: Setup Node and Install Dependencies
-              uses: ./.github/actions/setup-node-and-install-deps/action.yaml
+              uses: ./.github/actions/setup-node-and-install-deps
 
             - name: Build
               run: npm run build
