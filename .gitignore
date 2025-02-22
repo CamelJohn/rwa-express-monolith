@@ -8,3 +8,5 @@ lib/
 !.env.test:unit
 
 *.sqlite
+
+.jest-cache
