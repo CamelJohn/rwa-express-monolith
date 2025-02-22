@@ -39,7 +39,7 @@ jobs:
     run-integration-tests:
         name: Run integration tests
         runs-on: ubuntu-latest
-        needs: list-tests
+        needs: [list-tests, check-types, build]
         strategy:
             matrix:
                 integration_test_file: ${{ fromJson(needs.list-tests.outputs.matrix).integration_tests_files }}
@@ -55,7 +55,6 @@ jobs:
 
     build:
         name: Build typescript with tsc
-        needs: [check-types, run-integration-tests]
         runs-on: ubuntu-latest
 
         steps:
