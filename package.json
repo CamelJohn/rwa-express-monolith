@@ -12,7 +12,8 @@
         "types": "tsc --noEmit",
         "precompose*": "NODE_ENV=docker",
         "compose:up": "docker compose -f dev.compose.yml up --build",
-        "compose:down": "docker compose -f dev.compose.yml down",
+        "compose:down": "docker compose -f dev.compose.yml down --volumes --remove-orphans",
+        "postcompose:down": "docker system prune -f --volumes",
         "postcompose:up": "npm run compose:down"
     },
     "keywords": [],
